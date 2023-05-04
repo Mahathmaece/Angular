@@ -14,4 +14,7 @@ export class MailListService {
   getMailsByFolder(folderId: number, pageNumber: number, rowsOfPage: number): Observable<HeaderMail> {
     return this.http.get<HeaderMail>(apiUrl + `/folder/${folderId}/${pageNumber}/${rowsOfPage}`);
   }
+  getMailsByLabel(folderId:number, pageNumber: number, rowsOfPage: number,labelId:number):Observable<HeaderMail>{
+    return this.http.get<HeaderMail>(apiUrl + `/label/${folderId}/${pageNumber}/${rowsOfPage}/${labelId}`);  
+  }
 }

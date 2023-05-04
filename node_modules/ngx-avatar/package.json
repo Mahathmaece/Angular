@@ -1,0 +1,35 @@
+{
+  "name": "ngx-avatar",
+  "description": "A universal avatar component for Angular 4+ applications that fetches / generates avatar based on the information you have about the user.",
+  "version": "3.7.0",
+  "keywords": [
+    "angular",
+    "avatar",
+    "component",
+    "initials"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HaithemMosbahi/ngx-avatar"
+  },
+  "dependencies": {
+    "is-retina": "^1.0.3",
+    "ts-md5": "^1.2.4",
+    "tslib": "^1.9.0"
+  },
+  "peerDependencies": {
+    "@angular/common": "^6.0.0 || ^7.0.0 || ^8.0.0",
+    "@angular/core": "^6.0.0 || ^7.0.0 || ^8.0.0"
+  },
+  "main": "bundles/ngx-avatar.umd.js",
+  "module": "fesm5/ngx-avatar.js",
+  "es2015": "fesm2015/ngx-avatar.js",
+  "esm5": "esm5/ngx-avatar.js",
+  "esm2015": "esm2015/ngx-avatar.js",
+  "fesm5": "fesm5/ngx-avatar.js",
+  "fesm2015": "fesm2015/ngx-avatar.js",
+  "typings": "ngx-avatar.d.ts",
+  "metadata": "ngx-avatar.metadata.json",
+  "sideEffects": false
+}

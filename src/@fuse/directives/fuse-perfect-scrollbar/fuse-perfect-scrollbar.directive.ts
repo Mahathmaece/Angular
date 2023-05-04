@@ -450,7 +450,6 @@ export class FusePerfectScrollbarDirective implements OnInit, AfterViewInit, OnD
      */
     scrollToBottom(offset?: number, speed?: number): void
     {
-        debugger;
         const top = this.elementRef.nativeElement.scrollHeight - this.elementRef.nativeElement.clientHeight;
         this.animateScrolling('scrollTop', top - (offset || 0), speed);
     }

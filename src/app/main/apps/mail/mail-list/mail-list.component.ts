@@ -17,7 +17,7 @@ import { Folders } from '@/_models/shared/constants';
     animations: fuseAnimations
 })
 export class MailListComponent implements OnInit, OnDestroy {
-    mails: Mail[];
+    mails: Mail[] = [];
     currentMail: Mail;
 
     config: any;
@@ -27,8 +27,6 @@ export class MailListComponent implements OnInit, OnDestroy {
     folderId: number;
     folders = Folders;
     private readonly destroy$ = new Subject<void>();
-
-    @ViewChildren('mailListItemGroup') mailListItemGroup: ElementRef;
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -63,6 +61,7 @@ export class MailListComponent implements OnInit, OnDestroy {
         this._mailService.onMailsChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(mails => {
+                debugger;
                 this.mails = mails.results;
                 this.totalRows = mails.totalRows;
                 this.pageNumber = mails.pageNumber;
@@ -100,6 +99,7 @@ export class MailListComponent implements OnInit, OnDestroy {
                         this._mailService.onMailsChanged
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe(mails => {
+                                debugger;
                                 this.mails = mails.results;
                                 this.totalRows = mails.totalRows;
                                 this.pageNumber = mails.pageNumber;
@@ -151,7 +151,9 @@ export class MailListComponent implements OnInit, OnDestroy {
         // Set current mail
         this._mailService.setCurrentMail(mailId);
     }
-
+    trackById(index: number, mail: any): number {
+        return mail.id;
+    }
     pageChangeEvent(pageNumber: number) {
         let folderType = this._activatedRoute.snapshot.params.folderHandle;
         const folderId = this.folders.find(x => x.handle == folderType).id;
@@ -168,12 +170,6 @@ export class MailListComponent implements OnInit, OnDestroy {
                 this.headerMail = resp;
                 this.headerMail.folderId = folderId;
                 this.mails = this.headerMail.results;
-                setTimeout(function () {
-                    debugger;
-                    document.getElementById('mailListItemGroup').scrollTop = -900;
-                    // this.mailListItemGroup.scrollTop = -900;
-                    // this.mailListItemGroup.scrollTop = (this.mailListItemGroup.clientHeight - this.mailListItemGroup.parentElement.clientHeight);
-                }, 1000);
 
             },
             error: (error) => {

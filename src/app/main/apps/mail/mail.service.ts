@@ -32,6 +32,7 @@ export class MailService implements Resolve<any>
     onFiltersChanged: BehaviorSubject<any>;
     onLabelsChanged: BehaviorSubject<any>;
     onSearchTextChanged: BehaviorSubject<any>;
+    folderName: any;
 
     /**
      * Constructor
@@ -158,6 +159,7 @@ export class MailService implements Resolve<any>
      * @returns {Promise<Mail[]>}
      */
     getMails(): Promise<HeaderMail> {
+        this.folderName = this.routeParams.folderHandle;
         if (this.routeParams.labelHandle) {
             return this.getMailsByLabel(this.routeParams.labelHandle);
         }
@@ -188,19 +190,11 @@ export class MailService implements Resolve<any>
 
             this._httpClient.get(`${environment.apiUrl}/mails/folder/${folderId}/${pageNumber}/${rowsOfPage}`)
                 .subscribe((mails: any) => {
-                    //    this.mails = mails.map(mail =>{
-                    //         return new Mail(mail);
-                    //     });
                     this.headerMail = mails;
                     this.headerMail.folderId = folderId;
                     this.mails = this.headerMail.results;
-                    //this.mails = FuseUtils.filterArrayByString(this.mails, this.searchText);
-
                     this.headerMail.results = FuseUtils.filterArrayByString(this.headerMail.results, this.searchText);
-                    //this.onMailsChanged.next(this.mails);
-
                     this.onMailsChanged.next(this.headerMail);
-                    //resolve(this.mails);
                     resolve(this.headerMail);
                     return new HeaderMail(this.headerMail);
                 }, reject);
@@ -252,43 +246,24 @@ export class MailService implements Resolve<any>
      */
     getMailsByLabel(handle): Promise<HeaderMail> {
         return new Promise((resolve, reject) => {
-            // this._httpClient.get('api/mail-labels?handle=' + handle)
-            //     .subscribe((labels: any) => {
-
-            //         const labelId = labels[0].id;
-            //         this._httpClient.get(`${environment.apiUrl}/mails/label/${labelId}`)
-            //             .subscribe((mails: any) => {
-
-            //                 this.mails = mails.map(mail => {
-            //                     return new Mail(mail);
-            //                 });
-
-            //                 this.mails = FuseUtils.filterArrayByString(this.mails, this.searchText);
-
-            //                 this.onMailsChanged.next(this.mails);
-
-            //                 resolve(this.mails);
-
-            //             }, reject);
-            //     });
             var labels = MailFakeDb.labels.filter(x => x.handle == handle);
             const labelId = labels[0].id;
             this._httpClient.get(`${environment.apiUrl}/mails/label/${labelId}`)
-                .subscribe((mails: any) => {
+                .subscribe((resp: any) => {
+                    debugger;
+                    this.headerMail = resp;
 
-                    this.mails = mails.map(mail => {
-                        return new Mail(mail);
-                    });
-
-                    this.mails = FuseUtils.filterArrayByString(this.mails, this.searchText);
-
-                    this.onMailsChanged.next(this.mails);
-
-                    //resolve(this.mails); //cmt by mh
+                    this.mails = FuseUtils.filterArrayByString(this.headerMail.results, this.searchText);
+                    this.onMailsChanged.next(this.headerMail);
 
                 }, reject);
         });
     }
+
+    //   getMailsByLabel(folderId:number, pageNumber: number, rowsOfPage: number,labelId:number):Observable<HeaderMail>{
+
+    //     return this._httpClient.get<HeaderMail>(`${environment.apiUrl}/mails/label/${folderId}/${pageNumber}/${rowsOfPage}/${labelId}`);  
+    //   }
 
     /**
      * Toggle selected mail by id

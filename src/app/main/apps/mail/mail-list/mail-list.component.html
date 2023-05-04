@@ -11,7 +11,7 @@
 <div class="mail-list" #mailListItemGroup id="mailListItemGroup">
     <mail-list-item
         matRipple
-        *ngFor="let mail of mails | paginate:this.config"
+        *ngFor="let mail of mails;trackBy: trackById | paginate:this.config"
         [mail]="mail"
         (click)="readMail(mail.id)"
         [ngClass]="{ 'current-mail': mail?.id == currentMail?.id }"
